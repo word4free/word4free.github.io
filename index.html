@@ -29,7 +29,7 @@ body{font:13px "Segoe UI",system-ui,sans-serif;color:var(--txt);background:var(-
 #rib button{background:0;border:1px solid transparent;border-radius:3px;min-width:28px;height:28px;padding:0 6px;cursor:pointer;color:var(--txt);font:inherit;display:inline-flex;align-items:center;justify-content:center;gap:4px}
 #rib button:hover{background:var(--hov);border-color:var(--bd)}
 #rib select{height:26px;background:var(--pan);color:var(--txt);border:1px solid var(--bd);border-radius:3px;max-width:130px}
-.cw{position:relative;display:inline-flex;width:28px;height:28px;align-items:center;justify-content:center;cursor:pointer;border-radius:3px}.cw:hover{background:var(--hov)}.cw i{position:absolute;left:6px;right:6px;bottom:2px;height:4px;border:1px solid rgba(0,0,0,.25)}#rib .cw input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;padding:0;border:0}.tb{display:inline-flex;align-items:center;gap:5px}.tb svg.i{width:16px;height:16px}#brand{font-weight:600;font-size:14px;letter-spacing:.2px}
+.cw{position:relative;display:inline-flex;width:28px;height:28px;align-items:center;justify-content:center;cursor:pointer;border-radius:3px}.cw:hover{background:var(--hov)}.cw i{position:absolute;left:6px;right:6px;bottom:2px;height:4px;border:1px solid rgba(0,0,0,.25)}#rib .cw input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;padding:0;border:0}.tb{display:inline-flex;align-items:center;gap:5px}.tb svg.i{width:16px;height:16px}#lang{border:0;padding:5px 6px}#lang option{color:#000}#brand{font-weight:600;font-size:14px;letter-spacing:.2px}
 svg.i{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 #ruler{margin:0 auto;width:100%;background:var(--rib);border-bottom:1px solid var(--bd);position:relative;overflow:hidden}
 #ruler i{position:absolute;left:50%;top:6px;width:794px;height:10px;transform:translateX(-50%);background:repeating-linear-gradient(90deg,#888 0 1px,transparent 1px 37.8px);opacity:.6;border-bottom:1px solid #888}
@@ -58,7 +58,7 @@ table,img,tr,li{break-inside:avoid}h1,h2,h3{break-after:avoid}}
 </style></head><body>
 <div id="title"><svg width="30" height="30" viewBox="0 0 32 32" aria-label="Logo Word Web"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2b7cd3"/><stop offset="1" stop-color="#0f3d91"/></linearGradient></defs><path d="M7 2h13l7 7v21H7z" fill="#fff"/><path d="M20 2v7h7z" fill="#bcd0ee"/><rect x="1" y="9" width="17" height="17" rx="3" fill="url(#lg)"/><path d="M4.5 13.5l2.2 8.5 2.8-6.2 2.8 6.2 2.2-8.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="23" cy="24" r="5" fill="#fff" stroke="#185abd" stroke-width="1.5"/><path d="M18 24h10M23 19c-3 3-3 7 0 10M23 19c3 3 3 7 0 10" fill="none" stroke="#185abd" stroke-width="1"/></svg><span id="brand">Word Web</span><input id="name" value="Documento1" aria-label="Nombre del documento"><span id="state">Guardado</span>
 <div id="q"><input id="qi" placeholder="Buscar comandos (Alt+Q)"><div id="res"></div></div>
-<button class="tb" data-ic="nw" onclick="newDoc()">Nuevo</button><button class="tb" data-ic="opn" onclick="$('#file').click()">Abrir</button><button class="tb" data-ic="save" onclick="saveHtml()">Guardar HTML</button>
+<select id="lang" class="tb" aria-label="Idioma / Language"><option value="es">Español</option><option value="en">English</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="pt">Português</option><option value="gl">Galego</option></select><button class="tb" data-ic="nw" onclick="newDoc()">Nuevo</button><button class="tb" data-ic="opn" onclick="$('#file').click()">Abrir</button><button class="tb" data-ic="save" onclick="saveHtml()">Guardar HTML</button>
 <button class="tb p" data-ic="dw" onclick="exportDocx()">Descargar Word (.docx)</button><button class="tb p" data-ic="dp" onclick="exportPdf()">Exportar PDF</button></div>
 <div id="tabs"></div><div id="rib"></div><div id="ruler"><i></i></div>
 <div id="main"><div id="side"><b>Navegación</b><div id="nav"></div></div>
@@ -70,7 +70,7 @@ table,img,tr,li{break-inside:avoid}h1,h2,h3{break-after:avoid}}
 <div id="toast"></div>
 <script>
 const $=s=>document.querySelector(s),ed=$('#ed'),fd=$('#fd');let saved=null,dirty=false,A=[],C=[],margin=94;
-const toast=(m)=>{const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(t.h);t.h=setTimeout(()=>t.style.display='none',3500)};
+const toast=(m)=>{const t=$('#toast');t.textContent=T(m);t.style.display='block';clearTimeout(t.h);t.h=setTimeout(()=>t.style.display='none',3500)};
 document.addEventListener('selectionchange',()=>{const s=getSelection();if(s.rangeCount&&ed.contains(s.anchorNode))saved=s.getRangeAt(0).cloneRange()});
 const restore=()=>{ed.focus();if(saved){const s=getSelection();s.removeAllRanges();s.addRange(saved)}};
 const ex=(c,v)=>{restore();document.execCommand('styleWithCSS',false,true);document.execCommand(c,false,v);ed.focus();change()};
@@ -80,7 +80,7 @@ const P={undo:'M9 14 4 9l5-5M4 9h10a6 6 0 0 1 0 12h-3',redo:'m15 14 5-5-5-5M20 9
 const ic={};for(const k in P)ic[k]=`<svg class="i" viewBox="0 0 24 24"><path d="${P[k]}"/></svg>`;
 const al=t=>{const w=t=='l'?[16,10,16,10]:t=='c'?[16,10,16,10]:t=='r'?[16,10,16,10]:[16,16,16,16];return `<svg class="i" viewBox="0 0 24 24">${w.map((x,i)=>{const s=t=='c'?(24-x)/2:t=='r'?20-x+2:4;return `<path d="M${s} ${6+i*4}h${x}"/>`}).join('')}</svg>`};
 function btn(l,tip,f){A.push(f);C.push([tip,f]);return `<button title="${tip}" data-a="${A.length-1}">${l}</button>`}
-function sel(o,tip,f,def){A.push(f);return `<select title="${tip}" data-s="${A.length-1}">${o.map(x=>`<option${x==def?' selected':''}>${x}</option>`).join('')}</select>`}
+function sel(o,tip,f,def){A.push(f);return `<select title="${tip}" data-s="${A.length-1}">${o.map(x=>`<option value="${x}"${x==def?' selected':''}>${x}</option>`).join('')}</select>`}
 function col(tip,f,v,i){A.push(f);return `<label class="cw" title="${tip}">${ic[i]}<i style="background:${v}"></i><input type="color" value="${v}" data-c="${A.length-1}"></label>`}
 const grp=(n,...i)=>`<div class="g"><div class="gi">${i.join('')}</div><span>${n}</span></div>`;
 const cell=()=>{const n=saved&&saved.startContainer;const e=n&&(n.nodeType==1?n:n.parentElement);return e&&e.closest&&ed.contains(e)?e.closest('td,th'):null};
@@ -88,7 +88,7 @@ const tbl=f=>()=>{const c=cell();if(!c)return toast('Coloca el cursor dentro de 
 const fonts=['Calibri','Arial','Times New Roman','Georgia','Verdana','Courier New','Comic Sans MS'],sizes=[8,9,10,11,12,14,16,18,20,24,28,36,48,72];
 const ST={'Normal':['p'],'Título':['h1','ttl'],'Subtítulo':['p','sub'],'Título 1':['h1'],'Título 2':['h2'],'Título 3':['h3']};
 const stSel=sel(Object.keys(ST),'Estilos',v=>{const[t,c]=ST[v];ex('formatBlock','<'+t+'>');if(c){const b=getSelection().anchorNode;const e=(b.nodeType==1?b:b.parentElement).closest(t);if(e)e.className=c}});
-const date=()=>ins(new Date().toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'}));
+const date=()=>ins(new Date().toLocaleDateString(LOC[lang],{day:'numeric',month:'long',year:'numeric'}));
 const navT=()=>{const s=$('#side');s.style.display=s.style.display=='block'?'none':'block';buildNav()};
 const zoom=d=>{const r=$('#zr');r.value=Math.min(200,Math.max(50,+r.value+d));r.oninput()};
 const theme=()=>{const d=document.documentElement;d.dataset.theme=d.dataset.theme=='dark'?'':'dark'};
@@ -113,9 +113,165 @@ grp('Orden',btn(ic.pb+' Salto de página','Insertar salto de página',()=>ins('<
 'Revisar':[grp('Revisión',btn(ic.find+' Buscar y reemplazar','Buscar y reemplazar',()=>fd.showModal()),btn(ic.cnt+' Recuento','Recuento de palabras',()=>{const t=ed.innerText;toast(`${words()} palabras · ${t.length} caracteres · ${pages()} páginas`)}),btn(ic.trash+' Borrar todo','Borrar todo el contenido',()=>{if(confirm('¿Borrar todo el contenido del documento?')){ed.innerHTML='<p><br></p>';change()}}))],
 'Vista':[grp('Vistas',btn(ic.nav+' Navegación','Panel de navegación',navT),btn(ic.prt+' Vista de impresión','Vista de impresión',()=>print())),grp('Zoom',btn(ic.zo,'Reducir zoom',()=>zoom(-10)),btn(ic.zi,'Aumentar zoom',()=>zoom(10)),btn('100%','Zoom 100%',()=>{$('#zr').value=100;$('#zr').oninput()})),grp('Interfaz',btn(ic.moon+' Modo oscuro','Alternar modo oscuro',theme),btn(ic.rul+' Regla','Mostrar u ocultar regla',()=>{const r=$('#ruler');r.style.display=r.style.display=='none'?'':'none'}))]};
 function blocks(){const s=getSelection();let l=[...ed.querySelectorAll('p,div:not(.pb),h1,h2,h3,li')];if(s.rangeCount&&!s.isCollapsed){const r=s.getRangeAt(0);const f=l.filter(b=>r.intersectsNode(b));if(f.length)return f}const n=s.anchorNode;const e=n&&(n.nodeType==1?n:n.parentElement);const b=e&&e.closest&&e.closest('p,div,h1,h2,h3,li');return b&&ed.contains(b)?[b]:l}
+// ===== Idiomas (es, en, fr, de, pt, gl): traduce la interfaz sin tocar el contenido del documento =====
+const LOC={es:'es-ES',en:'en-GB',fr:'fr-FR',de:'de-DE',pt:'pt-PT',gl:'gl-ES'},TR={en:{},fr:{},de:{},pt:{},gl:{}},O=new WeakMap();
+let lang=localStorage.getItem('wordweb.lang')||'es';if(!LOC[lang])lang='es';
+`Nuevo|New|Nouveau|Neu|Novo|Novo
+Abrir|Open|Ouvrir|Öffnen|Abrir|Abrir
+Guardar HTML|Save HTML|Enregistrer HTML|HTML speichern|Guardar HTML|Gardar HTML
+Descargar Word (.docx)|Download Word (.docx)|Télécharger Word (.docx)|Word herunterladen (.docx)|Baixar Word (.docx)|Descargar Word (.docx)
+Exportar PDF|Export PDF|Exporter en PDF|Als PDF exportieren|Exportar PDF|Exportar PDF
+Buscar comandos (Alt+Q)|Search commands (Alt+Q)|Rechercher des commandes (Alt+Q)|Befehle suchen (Alt+Q)|Pesquisar comandos (Alt+Q)|Buscar comandos (Alt+Q)
+Nombre del documento|Document name|Nom du document|Dokumentname|Nome do documento|Nome do documento
+Sin guardar…|Unsaved…|Non enregistré…|Nicht gespeichert…|Por guardar…|Sen gardar…
+Guardado|Saved|Enregistré|Gespeichert|Guardado|Gardado
+Error al guardar|Save error|Erreur d’enregistrement|Speicherfehler|Erro ao guardar|Erro ao gardar
+Navegación|Navigation|Navigation|Navigation|Navegação|Navegación
+Buscar y reemplazar|Find and replace|Rechercher et remplacer|Suchen und ersetzen|Localizar e substituir|Buscar e substituír
+Buscar siguiente|Find next|Suivant|Weitersuchen|Localizar seguinte|Buscar seguinte
+Buscar|Find|Rechercher|Suchen|Localizar|Buscar
+Reemplazar con|Replace with|Remplacer par|Ersetzen durch|Substituir por|Substituír por
+Reemplazar todo|Replace all|Tout remplacer|Alle ersetzen|Substituir tudo|Substituír todo
+Cerrar|Close|Fermer|Schließen|Fechar|Pechar
+Español (España)|English|Français|Deutsch|Português|Galego
+palabras|words|mots|Wörter|palavras|palabras
+caracteres|characters|caractères|Zeichen|caracteres|caracteres
+páginas|pages|pages|Seiten|páginas|páxinas
+Página|Page|Page|Seite|Página|Páxina
+Inicio|Home|Accueil|Start|Início|Inicio
+Insertar|Insert|Insertion|Einfügen|Inserir|Inserir
+Diseño|Design|Création|Entwurf|Design|Deseño
+Disposición|Layout|Mise en page|Layout|Esquema|Disposición
+Referencias|References|Références|Verweise|Referências|Referencias
+Correspondencia|Mailings|Publipostage|Sendungen|Correspondência|Correspondencia
+Revisar|Review|Révision|Überprüfen|Rever|Revisar
+Vista|View|Affichage|Ansicht|Ver|Ver
+Deshacer|Undo|Annuler|Rückgängig|Anular|Desfacer
+Rehacer|Redo|Rétablir|Wiederholen|Refazer|Refacer
+Fuente del documento|Document font|Police du document|Dokumentschriftart|Tipo de letra do documento|Fonte do documento
+Fuente|Font|Police|Schriftart|Tipo de letra|Fonte
+Tamaño|Size|Taille|Größe|Tamanho|Tamaño
+Negrita|Bold|Gras|Fett|Negrito|Negriña
+Cursiva|Italic|Italique|Kursiv|Itálico|Cursiva
+Subrayado|Underline|Souligné|Unterstrichen|Sublinhado|Subliñado
+Tachado|Strikethrough|Barré|Durchgestrichen|Rasurado|Riscado
+Superíndice|Superscript|Exposant|Hochgestellt|Sobrescrito|Superíndice
+Subíndice|Subscript|Indice|Tiefgestellt|Subscrito|Subíndice
+Color de fuente|Font color|Couleur de police|Schriftfarbe|Cor do tipo de letra|Cor da fonte
+Resaltado|Highlight|Surlignage|Hervorhebung|Realce|Resaltado
+Borrar formato|Clear formatting|Effacer la mise en forme|Formatierung löschen|Limpar formatação|Borrar formato
+Párrafo|Paragraph|Paragraphe|Absatz|Parágrafo|Parágrafo
+Viñetas|Bullets|Puces|Aufzählung|Marcadores|Viñetas
+Numeración|Numbering|Numérotation|Nummerierung|Numeração|Numeración
+Reducir sangría|Decrease indent|Réduire le retrait|Einzug verkleinern|Diminuir avanço|Reducir sangría
+Aumentar sangría|Increase indent|Augmenter le retrait|Einzug vergrößern|Aumentar avanço|Aumentar sangría
+Alinear a la izquierda|Align left|Aligner à gauche|Linksbündig|Alinhar à esquerda|Aliñar á esquerda
+Alinear a la derecha|Align right|Aligner à droite|Rechtsbündig|Alinhar à direita|Aliñar á dereita
+Centrar|Center|Centrer|Zentriert|Centrar|Centrar
+Justificar|Justify|Justifier|Blocksatz|Justificar|Xustificar
+Interlineado|Line spacing|Interligne|Zeilenabstand|Espaçamento entre linhas|Interliñado
+Estilos|Styles|Styles|Formatvorlagen|Estilos|Estilos
+Edición|Editing|Édition|Bearbeiten|Edição|Edición
+Subtítulo|Subtitle|Sous-titre|Untertitel|Subtítulo|Subtítulo
+Título 1|Heading 1|Titre 1|Überschrift 1|Título 1|Título 1
+Título 2|Heading 2|Titre 2|Überschrift 2|Título 2|Título 2
+Título 3|Heading 3|Titre 3|Überschrift 3|Título 3|Título 3
+Título|Title|Titre|Titel|Título|Título
+Tablas|Tables|Tableaux|Tabellen|Tabelas|Táboas
+Insertar tabla|Insert table|Insérer un tableau|Tabelle einfügen|Inserir tabela|Inserir táboa
+Tabla de contenido|Table of contents|Table des matières|Inhaltsverzeichnis|Índice|Índice
+Tabla|Table|Tableau|Tabelle|Tabela|Táboa
+Insertar fila debajo|Insert row below|Insérer une ligne dessous|Zeile darunter einfügen|Inserir linha abaixo|Inserir fila debaixo
+Insertar columna a la derecha|Insert column right|Insérer une colonne à droite|Spalte rechts einfügen|Inserir coluna à direita|Inserir columna á dereita
+Eliminar fila|Delete row|Supprimer la ligne|Zeile löschen|Eliminar linha|Eliminar fila
+Eliminar columna|Delete column|Supprimer la colonne|Spalte löschen|Eliminar coluna|Eliminar columna
+Eliminar tabla|Delete table|Supprimer le tableau|Tabelle löschen|Eliminar tabela|Eliminar táboa
+Ilustraciones|Illustrations|Illustrations|Illustrationen|Ilustrações|Ilustracións
+Insertar imagen|Insert image|Insérer une image|Bild einfügen|Inserir imagem|Inserir imaxe
+Imagen|Image|Image|Bild|Imagem|Imaxe
+Vínculos|Links|Liens|Links|Ligações|Ligazóns
+Insertar enlace|Insert link|Insérer un lien|Link einfügen|Inserir ligação|Inserir ligazón
+Enlace|Link|Lien|Link|Ligação|Ligazón
+Páginas|Pages|Pages|Seiten|Páginas|Páxinas
+Insertar salto de página|Insert page break|Insérer un saut de page|Seitenumbruch einfügen|Inserir quebra de página|Inserir salto de páxina
+Salto de página|Page break|Saut de page|Seitenumbruch|Quebra de página|Salto de páxina
+Texto|Text|Texte|Text|Texto|Texto
+Editar encabezado|Edit header|Modifier l’en-tête|Kopfzeile bearbeiten|Editar cabeçalho|Editar cabeceira
+Editar pie de página|Edit footer|Modifier le pied de page|Fußzeile bearbeiten|Editar rodapé|Editar pé de páxina
+Encabezado|Header|En-tête|Kopfzeile|Cabeçalho|Cabeceira
+Pie de página|Footer|Pied de page|Fußzeile|Rodapé|Pé de páxina
+Insertar fecha|Insert date|Insérer la date|Datum einfügen|Inserir data|Inserir data
+Fecha|Date|Date|Datum|Data|Data
+Documento|Document|Document|Dokument|Documento|Documento
+Espaciado de párrafos|Paragraph spacing|Espacement des paragraphes|Absatzabstand|Espaçamento de parágrafos|Espazado de parágrafos
+Espaciado|Spacing|Espacement|Abstand|Espaçamento|Espazado
+Fondo de página|Page background|Arrière-plan|Seitenhintergrund|Fundo da página|Fondo da páxina
+Color de la página|Page color|Couleur de page|Seitenfarbe|Cor da página|Cor da páxina
+Márgenes|Margins|Marges|Seitenränder|Margens|Marxes
+Normal (2,5 cm)|Normal (2.5 cm)|Normal (2,5 cm)|Normal (2,5 cm)|Normal (2,5 cm)|Normal (2,5 cm)
+Estrecho (1,27 cm)|Narrow (1.27 cm)|Étroit (1,27 cm)|Schmal (1,27 cm)|Estreito (1,27 cm)|Estreito (1,27 cm)
+Ancho (3,8 cm)|Wide (3.8 cm)|Large (3,8 cm)|Breit (3,8 cm)|Largo (3,8 cm)|Ancho (3,8 cm)
+Sangría|Indent|Retrait|Einzug|Avanço|Sangría
+Menos|Less|Moins|Weniger|Menos|Menos
+Más|More|Plus|Mehr|Mais|Máis
+Orden|Arrange|Organiser|Anordnen|Organizar|Ordenar
+Insertar índice de títulos|Insert heading index|Insérer l’index des titres|Titelverzeichnis einfügen|Inserir índice de títulos|Inserir índice de títulos
+Índice|Index|Index|Index|Índice|Índice
+Panel de navegación|Navigation pane|Volet de navigation|Navigationsbereich|Painel de navegação|Panel de navegación
+Panel|Pane|Volet|Bereich|Painel|Panel
+Mostrar u ocultar navegación|Show or hide navigation|Afficher ou masquer la navigation|Navigation ein-/ausblenden|Mostrar ou ocultar navegação|Amosar ou agochar navegación
+Campos|Fields|Champs|Felder|Campos|Campos
+Insertar campo Nombre|Insert Name field|Insérer le champ Nom|Feld Name einfügen|Inserir campo Nome|Inserir campo Nome
+Insertar campo Dirección|Insert Address field|Insérer le champ Adresse|Feld Adresse einfügen|Inserir campo Morada|Inserir campo Enderezo
+Dirección del enlace|Link address|Adresse du lien|Link-Adresse|Endereço da ligação|Enderezo da ligazón
+Nombre|Name|Nom|Name|Nome|Nome
+Dirección|Address|Adresse|Adresse|Morada|Enderezo
+Revisión|Proofing|Vérification|Überprüfung|Revisão|Revisión
+Recuento de palabras|Word count|Nombre de mots|Wörter zählen|Contagem de palavras|Reconto de palabras
+Recuento|Count|Compter|Zählen|Contagem|Reconto
+Borrar todo el contenido del documento|Delete all document content|Effacer tout le contenu du document|Gesamten Dokumentinhalt löschen|Apagar todo o conteúdo do documento|Borrar todo o contido do documento
+Borrar todo el contenido|Delete all content|Effacer tout le contenu|Gesamten Inhalt löschen|Apagar todo o conteúdo|Borrar todo o contido
+Borrar todo|Clear all|Tout effacer|Alles löschen|Apagar tudo|Borrar todo
+Vistas|Views|Affichages|Ansichten|Vistas|Vistas
+Vista de impresión|Print view|Aperçu avant impression|Druckansicht|Pré-visualização|Vista de impresión
+Reducir zoom|Zoom out|Zoom arrière|Verkleinern|Reduzir zoom|Reducir zoom
+Aumentar zoom|Zoom in|Zoom avant|Vergrößern|Aumentar zoom|Aumentar zoom
+Interfaz|Interface|Interface|Oberfläche|Interface|Interface
+Alternar modo oscuro|Toggle dark mode|Basculer le mode sombre|Dunkelmodus umschalten|Alternar modo escuro|Alternar modo escuro
+Modo oscuro|Dark mode|Mode sombre|Dunkelmodus|Modo escuro|Modo escuro
+Mostrar u ocultar regla|Show or hide ruler|Afficher ou masquer la règle|Lineal ein-/ausblenden|Mostrar ou ocultar régua|Amosar ou agochar regra
+Regla|Ruler|Règle|Lineal|Régua|Regra
+Coloca el cursor dentro de una tabla.|Place the cursor inside a table.|Placez le curseur dans un tableau.|Setzen Sie den Cursor in eine Tabelle.|Coloque o cursor dentro de uma tabela.|Coloca o cursor dentro dunha táboa.
+¿Eliminar la tabla completa?|Delete the whole table?|Supprimer tout le tableau ?|Gesamte Tabelle löschen?|Eliminar a tabela completa?|Eliminar a táboa completa?
+Filas|Rows|Lignes|Zeilen|Linhas|Filas
+Columnas|Columns|Colonnas|Spalten|Colunas|Columnas
+Añade títulos (Título 1–3) para generar el índice.|Add headings (Heading 1–3) to generate the index.|Ajoutez des titres (Titre 1–3) pour générer l’index.|Fügen Sie Überschriften (1–3) hinzu, um den Index zu erstellen.|Adicione títulos (Título 1–3) para gerar o índice.|Engade títulos (Título 1–3) para xerar o índice.
+¿Borrar todo el contenido del documento?|Delete all document content?|Effacer tout le contenu du document ?|Gesamten Dokumentinhalt löschen?|Apagar todo o conteúdo do documento?|Borrar todo o contido do documento?
+No se encontraron más coincidencias.|No more matches found.|Aucune autre occurrence.|Keine weiteren Treffer.|Não há mais correspondências.|Non hai máis coincidencias.
+reemplazos|replacements|remplacements|Ersetzungen|substituições|substitucións
+No se pudo leer la imagen.|Could not read the image.|Impossible de lire l’image.|Bild konnte nicht gelesen werden.|Não foi possível ler a imagem.|Non se puido ler a imaxe.
+HTML guardado.|HTML saved.|HTML enregistré.|HTML gespeichert.|HTML guardado.|HTML gardado.
+Hay cambios sin guardar. ¿Abrir otro archivo igualmente?|There are unsaved changes. Open another file anyway?|Modifications non enregistrées. Ouvrir un autre fichier ?|Nicht gespeicherte Änderungen. Trotzdem andere Datei öffnen?|Há alterações por guardar. Abrir outro ficheiro?|Hai cambios sen gardar. Abrir outro ficheiro igualmente?
+No se pudo leer el archivo.|Could not read the file.|Impossible de lire le fichier.|Datei konnte nicht gelesen werden.|Não foi possível ler o ficheiro.|Non se puido ler o ficheiro.
+Se creará un documento nuevo y se perderá el contenido actual. ¿Continuar?|A new document will be created and current content lost. Continue?|Un nouveau document sera créé et le contenu actuel perdu. Continuer ?|Ein neues Dokument wird erstellt; der aktuelle Inhalt geht verloren. Fortfahren?|Será criado um novo documento e o conteúdo atual perdido. Continuar?|Crearase un documento novo e perderase o contido actual. Continuar?
+Error al exportar a PDF:|PDF export error:|Erreur d’export PDF :|PDF-Exportfehler:|Erro ao exportar PDF:|Erro ao exportar a PDF:
+Error al exportar a Word:|Word export error:|Erreur d’export Word :|Word-Exportfehler:|Erro ao exportar Word:|Erro ao exportar a Word:
+PDF generado:|PDF created:|PDF créé :|PDF erstellt:|PDF gerado:|PDF xerado:
+Word (.docx) generado:|Word (.docx) created:|Word (.docx) créé :|Word (.docx) erstellt:|Word (.docx) gerado:|Word (.docx) xerado:
+página(s)|page(s)|page(s)|Seite(n)|página(s)|páxina(s)
+Word abierto|Word file opened|Fichier Word ouvert|Word-Datei geöffnet|Word aberto|Word aberto
+No se pudo abrir el .docx:|Could not open the .docx:|Impossible d’ouvrir le .docx :|.docx konnte nicht geöffnet werden:|Não foi possível abrir o .docx:|Non se puido abrir o .docx:`.split('\n').forEach(r=>{const p=r.split('|');['en','fr','de','pt','gl'].forEach((l,i)=>TR[l][p[0]]=p[i+1])});
+const KEYS=Object.keys(TR.en).sort((a,b)=>b.length-a.length);
+const T=s=>{if(lang=='es'||typeof s!='string')return s;const d=TR[lang];let r=s;for(const k of KEYS)if(r.includes(k))r=r.split(k).join(d[k]);return r};
+function trDom(root){const els=root.matches?[root,...root.querySelectorAll('*')]:[...root.querySelectorAll('*')];els.forEach(el=>{if(el.closest('#sheet,script,style,svg,#state,#pg,#wc,#toast'))return;
+['title','placeholder','aria-label'].forEach(a=>{if(el.hasAttribute(a)){const o=O.get(el)||{};if(!(a in o))o[a]=el.getAttribute(a);O.set(el,o);el.setAttribute(a,T(o[a]))}});
+el.childNodes.forEach(c=>{if(c.nodeType==3&&c.nodeValue.trim()){if(!O.has(c))O.set(c,c.nodeValue);c.nodeValue=T(O.get(c))}})})}
+function setLang(l){lang=l;try{localStorage.setItem('wordweb.lang',l)}catch(e){}document.documentElement.lang=l;ed.lang=l;$('#lang').value=l;trDom(document.body);stats();$('#state').textContent=T(dirty?'Sin guardar…':'Guardado')}
+$('#lang').onchange=function(){setLang(this.value)};
+const _c=window.confirm.bind(window),_p=window.prompt.bind(window);window.confirm=m=>_c(T(m));window.prompt=(m,d)=>_p(T(m),d);
 document.querySelectorAll('[data-ic]').forEach(b=>b.innerHTML=ic[b.dataset.ic]+'<span>'+b.textContent+'</span>');
 const tabs=$('#tabs'),rib=$('#rib');
-Object.keys(R).forEach((k,i)=>{const b=document.createElement('button');b.textContent=k;b.onclick=()=>{tabs.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');rib.innerHTML=R[k].join('')};tabs.append(b);if(!i)b.click()});
+Object.keys(R).forEach((k,i)=>{const b=document.createElement('button');b.textContent=k;b.onclick=()=>{tabs.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');rib.innerHTML=R[k].join('');trDom(rib)};tabs.append(b);if(!i)b.click()});
 // Las pestañas se construyen al inicio: registrar todos los comandos
 Object.values(R).forEach(()=>{});
 rib.addEventListener('mousedown',e=>{if(!e.target.closest('select,input'))e.preventDefault()});
@@ -124,13 +280,13 @@ rib.addEventListener('change',e=>{const s=e.target;if(s.dataset.s)A[s.dataset.s]
 rib.addEventListener('input',e=>{const s=e.target;if(s.dataset.c){s.previousElementSibling.style.background=s.value;A[s.dataset.c](s.value)}});
 // buscador de comandos
 const qi=$('#qi'),res=$('#res');
-qi.oninput=()=>{const q=qi.value.toLowerCase();const m=q?C.filter(c=>c[0].toLowerCase().includes(q)).slice(0,7):[];res.innerHTML='';res.style.display=m.length?'block':'none';m.forEach(c=>{const d=document.createElement('div');d.textContent=c[0];d.onmousedown=e=>{e.preventDefault();c[1]();qi.value='';res.style.display='none'};res.append(d)})};
+qi.oninput=()=>{const q=qi.value.toLowerCase();const m=q?C.filter(c=>T(c[0]).toLowerCase().includes(q)||c[0].toLowerCase().includes(q)).slice(0,7):[];res.innerHTML='';res.style.display=m.length?'block':'none';m.forEach(c=>{const d=document.createElement('div');d.textContent=T(c[0]);d.onmousedown=e=>{e.preventDefault();c[1]();qi.value='';res.style.display='none'};res.append(d)})};
 qi.onkeydown=e=>{if(e.key=='Enter'&&res.firstChild)res.firstChild.onmousedown(e);if(e.key=='Escape'){qi.value='';res.style.display='none'}};qi.onblur=()=>res.style.display='none';
 // estado
 const words=()=>(ed.innerText.trim().match(/\S+/g)||[]).length,pages=()=>Math.max(1,Math.ceil($('#sheet').scrollHeight/1123));
-let tmr;function change(){dirty=true;$('#state').textContent='Sin guardar…';clearTimeout(tmr);tmr=setTimeout(persist,600);stats()}
-function stats(){$('#pg').textContent='Página '+pages();$('#wc').textContent=words()+' palabras · '+ed.innerText.length+' caracteres'}
-function persist(){try{localStorage.setItem('wordweb.doc',JSON.stringify({n:$('#name').value,h:ed.innerHTML,hd:$('#hdr').innerHTML,ft:$('#ftr').innerHTML,m:margin}));dirty=false;$('#state').textContent='Guardado'}catch(e){$('#state').textContent='Error al guardar';toast('No se pudo guardar localmente (¿documento o imágenes demasiado grandes?). Descarga el HTML o el DOCX.')}}
+let tmr;function change(){dirty=true;$('#state').textContent=T('Sin guardar…');clearTimeout(tmr);tmr=setTimeout(persist,600);stats()}
+function stats(){$('#pg').textContent=T('Página '+pages());$('#wc').textContent=T(words()+' palabras · '+ed.innerText.length+' caracteres')}
+function persist(){try{localStorage.setItem('wordweb.doc',JSON.stringify({n:$('#name').value,h:ed.innerHTML,hd:$('#hdr').innerHTML,ft:$('#ftr').innerHTML,m:margin}));dirty=false;$('#state').textContent=T('Guardado')}catch(e){$('#state').textContent=T('Error al guardar');toast('No se pudo guardar localmente (¿documento o imágenes demasiado grandes?). Descarga el HTML o el DOCX.')}}
 [ed,$('#hdr'),$('#ftr'),$('#name')].forEach(e=>e.addEventListener('input',change));
 ed.addEventListener('input',buildNav);
 addEventListener('beforeunload',e=>{if(dirty){persist();if(dirty){e.preventDefault();e.returnValue=''}}});
@@ -199,7 +355,7 @@ else if(t=='UL'||t=='OL')list(c,0);else if(t=='TABLE')table(c);
 else if((t=='DIV'||t=='BLOCKQUOTE')&&c.querySelector('p,div,h1,h2,h3,ul,ol,table'))conv(c);
 else{const b=base0();if(c.className=='sub'){b.z=14;b.c=[89,89,89]}para(c,b,M,W)}});flush()}
 conv(ed);const n=pdf.getNumberOfPages(),ht=$('#hdr').innerText.trim(),ft=$('#ftr').innerText.trim();
-for(let i=1;i<=n;i++){pdf.setPage(i);pdf.setFont('helvetica','normal');pdf.setFontSize(9);pdf.setTextColor(120);if(ht)pdf.text(ht,M,M/2);pdf.text((ft?ft+'   ':'')+'Página '+i+' de '+n,PW/2,PH-M/2,{align:'center'})}
+for(let i=1;i<=n;i++){pdf.setPage(i);pdf.setFont('helvetica','normal');pdf.setFontSize(9);pdf.setTextColor(120);if(ht)pdf.text(ht,M,M/2);pdf.text((ft?ft+'   ':'')+T('Página')+' '+i+' / '+n,PW/2,PH-M/2,{align:'center'})}
 const blob=pdf.output('blob');if(!blob||blob.size<500)throw new Error('El PDF generado está vacío.');dl(blob,fname()+'.pdf');toast('PDF generado: '+n+' página(s), '+Math.round(blob.size/1024)+' KB')}catch(e){console.error(e);toast('Error al exportar a PDF: '+e.message)}}
 // DOCX real
 async function exportDocx(){try{if(!window.docx)throw new Error('La biblioteca docx no se cargó (se necesita conexión a Internet la primera vez).');
@@ -243,6 +399,7 @@ else if(k=='b'||k=='i'||k=='u'){if(document.activeElement==ed)return}});
 // carga inicial
 try{const d=JSON.parse(localStorage.getItem('wordweb.doc'));if(d){$('#name').value=d.n;ed.innerHTML=d.h;$('#hdr').innerHTML=d.hd||'';$('#ftr').innerHTML=d.ft||'';if(d.m)setM(d.m)}}catch(e){}
 if(!ed.innerHTML.trim())ed.innerHTML='<h1 class="ttl">Documento sin título</h1><p class="sub">Empieza a escribir aquí</p><p>Usa la cinta de opciones para dar formato, insertar tablas e imágenes, y descarga el resultado como Word (.docx) o PDF.</p>';
-dirty=false;$('#state').textContent='Guardado';stats();buildNav();
+dirty=false;$('#state').textContent=T('Guardado');stats();buildNav();
+if(lang!='es')setLang(lang);else $('#lang').value='es';
 // registrar comandos de todas las pestañas en el buscador (construye cada cinta una vez)
 </script></body></html>
